@@ -7,6 +7,8 @@ class Vehicle:
         self.shipping_fee = shipping_fee
         self.weight = weight
         self.eta = eta
+        self.base_w = w
+        self.base_l = l
 
         if orientation == "Horizontal":
             self.w = w
@@ -15,11 +17,16 @@ class Vehicle:
             self.w = l
             self.l = w
 
+    def get_dim(self, orientation):
+        if orientation == "Vertical":
+            return self.base_l, self.base_w
+        return self.base_w, self.base_l
+
     def rotate(self):
         if self.orientation == "Horizontal":
             self.orientation = "Vertical"
             self.w, self.l = self.l, self.w
-        elif self.orientation == "Vertical":
+        else:
             self.orientation = "Horizontal"
             self.w, self.l = self.l, self.w
 
@@ -31,11 +38,14 @@ class Ship:
         self.max_capacity = max_capacity
 
 def load_data(filepath):
+    #Buka dan baca file JSON
     with open(filepath, "r") as f:
         data = json.load(f)
+
+    #Parsing data ships
     ships = []
     raw_ships = data.get("ships", [data.get("ship")] if "ship" in data else [])
-    
+
     for idx, s in enumerate(raw_ships):
         ship_id = s.get("id", f"Ship_{idx + 1}")
         ships.append(Ship(
@@ -45,6 +55,7 @@ def load_data(filepath):
             max_capacity=s["max_capacity"]
         ))
 
+    #Parsing data vehicles
     vehicles = []
     for v in data["vehicles"]:
         vehicles.append(Vehicle(
@@ -60,7 +71,7 @@ def load_data(filepath):
     return ships, vehicles
 
 '''
-Contoh format json yang bisa di import : 
+Contoh format json yang bisa di import :
 {
   "ships": [
     {
