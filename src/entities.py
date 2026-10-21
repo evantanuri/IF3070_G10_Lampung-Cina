@@ -59,20 +59,46 @@ def load_data(filepath):
 
     return ships, vehicles
 
-if __name__ == "__main__":
-    ships, vehicles = load_data("input.json")
-
-    print(f"Total kapal: {len(ships)}")
-    for s in ships:
-        print(f"-> Kapal {s.id}: Dimensi={s.w}x{s.l}, Kapasitas={s.max_capacity}")
-
-    print(f"\nTotal kendaraan: {len(vehicles)}")
-    for v in vehicles:
-        print(f"-> {v.id}: Dimensi saat ini={v.w}x{v.l}, Fee={v.shipping_fee}, Berat={v.weight}, ETA={v.eta}, Orientasi={v.orientation}")
-
-    # Tes rotasi singkat
-    print("\n--- Tes Rotasi V01 ---")
-    v_test = vehicles[0]
-    print(f"Sebelum rotate: {v_test.w}x{v_test.l} ({v_test.orientation})")
-    v_test.rotate()
-    print(f"Setelah rotate: {v_test.w}x{v_test.l} ({v_test.orientation})")
+'''
+Contoh format json yang bisa di import : 
+{
+  "ships": [
+    {
+      "id": "S1",
+      "dimensions": { "w": 10, "l": 20 },
+      "max_capacity": 500
+    },
+    {
+      "id": "S2",
+      "dimensions": { "w": 8, "l": 15 },
+      "max_capacity": 300
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "V01",
+      "dimensions": { "w": 2, "l": 4 },
+      "shipping_fee": 60,
+      "weight": 25,
+      "orientation": "Horizontal",
+      "eta": 2
+    },
+    {
+      "id": "V02",
+      "dimensions": { "w": 3, "l": 5 },
+      "shipping_fee": 80,
+      "weight": 40,
+      "orientation": "Vertical",
+      "eta": 1
+    },
+    {
+      "id": "V03",
+      "dimensions": { "w": 2, "l": 3 },
+      "shipping_fee": 45,
+      "weight": 18,
+      "orientation": "Horizontal",
+      "eta": 3
+    }
+  ]
+}
+'''
