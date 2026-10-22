@@ -277,6 +277,7 @@ def simulated_annealing(
             best_state = copy_state(current_state)
             best_fitness = current_fitness
             stagnation_counter = 0
+            print(f"Iterasi {iterations}: Fitness Score = {current_fitness}")
         else:
             stagnation_counter += 1
 
