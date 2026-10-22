@@ -110,6 +110,9 @@ def genetic_algorithm(ships, vehicles, population_size=30, generations=100, cros
     history_max   = [max(fitnesses)]                        # nilai terbaik di setiap generasi
     history_avg   = [sum(fitnesses) / len(fitnesses)]       # rata-rata nilai populasi setiap generasi
 
+    if verbose:
+        print(f"Generasi 0 (Populasi Awal): Fitness Terbaik = {best_fitness} | Rata-rata = {history_avg[0]:.1f}")
+
     for generation in range(1, generations + 1):
         # individu terbaik langsung lolos ke generasi berikutnya
         ranking        = sorted(range(len(population)), key=lambda i: fitnesses[i], reverse=True)
@@ -134,11 +137,10 @@ def genetic_algorithm(ships, vehicles, population_size=30, generations=100, cros
         if fitnesses[best_idx] > best_fitness:
             best_fitness = fitnesses[best_idx]
             best_state   = _copy_state(population[best_idx])
+            if verbose:                                   
+                print(f"Generasi {generation}: terbaik {history_max[-1]} | rata-rata {history_avg[-1]:.1f}")
 
         history_max.append(max(fitnesses))
         history_avg.append(sum(fitnesses) / len(fitnesses))
-
-        if verbose:                                   
-            print(f"Generasi {generation}: terbaik {history_max[-1]} | rata-rata {history_avg[-1]:.1f}")
 
     return best_state, best_fitness, generations, history_max, history_avg, initial_best

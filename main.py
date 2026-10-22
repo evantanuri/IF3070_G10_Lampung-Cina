@@ -165,7 +165,11 @@ def main():
 
         print(f"\nRingkasan Run #{r}:")
         print(f"Durasi Pencarian : {duration:.4f} detik")
-        print(f"Total Iterasi    : {total_iter}")
+        if choice == "7":
+            print(f"Jumlah Populasi  : {ga_pop_size}")
+            print(f"Total Iterasi    : {total_iter}")
+        else:
+            print(f"Total Iterasi    : {total_iter}")
         print(f"Initial Fitness  : {init_fitness}")
         print(f"Final Fitness    : {final_fitness}")
 
