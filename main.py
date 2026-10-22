@@ -16,6 +16,7 @@ from src.visualizer import (
 )
 from src.hill_climbing_sideways_move import hill_climbing_sideways_move
 from src.simulated_annealing import simulated_annealing
+from src.genetic_algorithm import genetic_algorithm
 
 def main():
     # Maiin Menu
@@ -38,6 +39,9 @@ def main():
         max_sideways = int(input("Masukkan jumlah maximum sideways move (default: 30): ").strip() or 30)
     if choice == "4":
         max_restarts = int(input("Masukkan jumlah maximum restart (default: 30): ").strip() or 30)
+    if choice == "7":
+        population_size = int(input("Jumlah populasi (default: 30): ").strip() or 30)
+        generations     = int(input("Banyak generasi (default: 100): ").strip() or 100)
 
 
     # Buat folder untuk menyimpan visualisasi
@@ -93,9 +97,12 @@ def main():
             history = {}
             final_state, final_fitness, total_iter = simulated_annealing(initial_state, ships, vehicles, history=history)
 
+        # Genetic Algorithm
         elif choice == "7":
-            print("otw kika")
-            break
+            final_state, final_fitness, total_iter, history_max, history_avg, initial_best = genetic_algorithm(ships, vehicles, population_size=population_size, generations=generations)
+            initial_state = initial_best
+            init_fitness  = calculate_fitness(initial_best, vehicles)
+            history = {"objective": history_avg, "best_objective": history_max}
 
         else:
             print("Pilihan nomor algoritma tidak valid.")
