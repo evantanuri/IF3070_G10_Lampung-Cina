@@ -12,6 +12,12 @@ Program untuk mencari penempatan kendaraan pada satu atau beberapa kapal kargo s
 | Evan Nathanael Tanuri | 18224019 |
 | Muhammad Okto Huzainy | 18224021 |
 
+
+Pembagian tugas:
+- Indanna: Hill-Climbing with Sideways Move, Genetic Algorithm, serta format dan bagian umum laporan
+- Evan: varian Hill-Climbing lainnya, alur program, dan pengelolaan repository GitHub
+- Okto: Simulated Annealing dan kode visualisasi
+
 ## Algoritma yang Diimplementasikan
 
 | No | Algoritma | Berkas |
@@ -29,19 +35,19 @@ Program untuk mencari penempatan kendaraan pada satu atau beberapa kapal kargo s
 ```
 .
 ├── main.py                  # program utama (menu, input parameter, pencatatan hasil)
-├── input.json               # contoh masukan: 1 kapal, 12 kendaraan
-├── input2.json              # contoh masukan: 3 kapal, 20 kendaraan
-├── input3.json              # contoh masukan: 2 kapal, 15 kendaraan
+├── input.json               
+├── input2.json              
+├── input3.json              
 ├── src/
-│   ├── entities.py          # kelas Vehicle dan Ship, pembaca berkas masukan
-│   ├── state.py             # representasi state, validasi penempatan, objective function
-│   ├── algorithms.py        # neighbor dan algoritma hill climbing
+│   ├── entities.py          
+│   ├── state.py             
+│   ├── algorithms.py        # algoritma hill climbing selain Sideways Move
 │   ├── hill_climbing_sideways_move.py
 │   ├── simulated_annealing.py
 │   ├── genetic_algorithm.py
-│   └── visualizer.py        # gambar state dan grafik
-├── output/                  # hasil visualisasi (tiap eksekusi membuat folder Run_<waktu>)
-└── docs/                    # laporan
+│   └── visualizer.py        
+├── output/                  
+└── docs/                    # Dokumen laporan
 ```
 
 ## Persiapan
