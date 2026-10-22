@@ -104,6 +104,14 @@ def main():
             init_fitness  = calculate_fitness(initial_best, vehicles)
             history = {"objective": history_avg, "best_objective": history_max}
 
+            # gambar state awal GA
+            visualize_state(
+                initial_best, ships, vehicles,
+                title=f"State Awal GA Run #{r}",
+                save_path=f"{output_dir}/state_awal_ga_run_{r}.png",
+                show=False
+            )
+
         else:
             print("Pilihan nomor algoritma tidak valid.")
             break
