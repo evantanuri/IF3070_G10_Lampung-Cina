@@ -13,10 +13,10 @@ def _state_key(posisi):             # mengubah state jadi tuple untuk detect sta
 
 
 def get_all_neighbors(posisi, ships, vehicles):     # membangkitkan neighbor state sekarang
-    ship_by_id = {s.id: s for s in ships}
+    ship_by_id  = {s.id: s for s in ships}
     current_key = _state_key(posisi)
-    seen = {current_key}                            # state yang sudah ada
-    neighbors = []
+    seen        = {current_key}                            # state yang sudah ada
+    neighbors   = []
 
     def add(candidate):
         key = _state_key(candidate)
@@ -51,8 +51,8 @@ def get_all_neighbors(posisi, ships, vehicles):     # membangkitkan neighbor sta
 
     # relocate 
     for v in vehicles:
-        base = _copy_state(posisi)
-        base[v.id] = None 
+        base        = _copy_state(posisi)
+        base[v.id]  = None 
 
         add(_copy_state(base))
 
@@ -62,8 +62,8 @@ def get_all_neighbors(posisi, ships, vehicles):     # membangkitkan neighbor sta
                 for x in range(ship.w - w + 1):
                     for y in range(ship.l - l + 1):
                         if is_valid_placement(v, ship, x, y, ori, base, vehicles):
-                            neighbor = _copy_state(base)
-                            neighbor[v.id] = {"ship_id": ship.id, "x": x, "y": y, "orientation": ori}
+                            neighbor        = _copy_state(base)
+                            neighbor[v.id]  = {"ship_id": ship.id, "x": x, "y": y, "orientation": ori}
                             add(neighbor)
     
     # rotate
@@ -71,10 +71,10 @@ def get_all_neighbors(posisi, ships, vehicles):     # membangkitkan neighbor sta
         p = posisi[v.id]
         if p is None:
             continue
-        ship = ship_by_id[p["ship_id"]]
-        ori = "Vertical" if p["orientation"] == "Horizontal" else "Horizontal"
-        neighbor = _copy_state(posisi)
-        neighbor[v.id] = None
+        ship            = ship_by_id[p["ship_id"]]
+        ori             = "Vertical" if p["orientation"] == "Horizontal" else "Horizontal"
+        neighbor        = _copy_state(posisi)
+        neighbor[v.id]  = None
         if is_valid_placement(v, ship, p["x"], p["y"], ori, neighbor, vehicles):
             neighbor[v.id] = {"ship_id": ship.id, "x": p["x"], "y": p["y"], "orientation": ori}
             add(neighbor)
@@ -87,33 +87,37 @@ def hill_climbing_sideways_move(initial_state, ships, vehicles, max_sideways=100
     current_fitness = calculate_fitness(current, vehicles)
     history = [current_fitness]
 
-    iteration = 0
-    sideways_count = 0
-    total_sideways = 0
+    iteration       = 0
+    sideways_count  = 0
+    total_sideways  = 0
+    stop_reason     = "max_iterations"
     
     while iteration < max_iter:
         neighbors = get_all_neighbors(current, ships, vehicles)
         if not neighbors:
+            stop_reason = "local_optimum"
             break
 
-        scored_neighbors = [(calculate_fitness(n, vehicles), n) for n in neighbors]
-        best_fitness = max(f for f, _ in scored_neighbors)
-        best_candidates = [n for f, n in scored_neighbors if f == best_fitness]
+        scored_neighbors    = [(calculate_fitness(n, vehicles), n) for n in neighbors]
+        best_fitness        = max(f for f, _ in scored_neighbors)
+        best_candidates     = [n for f, n in scored_neighbors if f == best_fitness]
 
         if best_fitness < current_fitness:       # semua neighbor lebih buruk, berhenti (local optimum)
+            stop_reason = "local_optimum"
             break
 
         if best_fitness == current_fitness:      # ada neighbor yang sama, pindah (sideways move)
             if sideways_count >= max_sideways:   # kondisi saat batas sideways tercapai
+                stop_reason = "local_optimum" if max_sideways == 0 else "max_sideways_reached"  
                 break
             sideways_count += 1
             total_sideways += 1
         else:                                    # ada neighbor yang lebih baik, pindah
             sideways_count = 0                   # hitungan sideways move yang berturut-turut direset
 
-        current = random.choice(best_candidates) # pilih acak kalau ada beberapa opsi terbaik
+        current         = random.choice(best_candidates) # pilih acak kalau ada beberapa opsi terbaik
         current_fitness = best_fitness
-        iteration += 1
+        iteration       += 1
         history.append(current_fitness)          # catat nilai sekarang
 
-    return current, current_fitness, iteration, history, total_sideways
+    return current, current_fitness, iteration, history, total_sideways, stop_reason

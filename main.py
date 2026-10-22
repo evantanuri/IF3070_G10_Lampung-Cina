@@ -42,7 +42,7 @@ def main():
         #Nanti masukin algoritma kalian disini ges, buat aja elif choice == "2" misal    
         
         elif choice == "3" : 
-            final_state, final_fitness, total_iter, history, total_sideways = hill_climbing_sideways_move(
+            final_state, final_fitness, total_iter, history, total_sideways, stop_reason = hill_climbing_sideways_move(
                 initial_state, ships, vehicles, max_sideways = max_sideways
             )
         
@@ -62,6 +62,7 @@ def main():
         if choice == "3":
             print(f"Total Sideways   : {total_sideways}")
             print(f"Batas Sideways   : {max_sideways}")
+            print(f"Penyebab berhenti: {stop_reason}")
 
 if __name__ == "__main__":
     main()
