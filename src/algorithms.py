@@ -311,14 +311,10 @@ def random_restart_hill_climbing(initial_state, ships, vehicles, max_restarts=30
             best_candidate = max(best_fitness, h) if best_fitness != float("-inf") else h
             best_so_far_history.append(best_candidate)
 
-        is_new_best = False
         if local_fitness > best_fitness:
             best_fitness = local_fitness
             best_state = local_state
-            is_new_best = True
-
-        status = f" -> Global Best Baru = {best_fitness}" if is_new_best else ""
-        print(f"Restart #{i}/{max_restarts}: Local Optimum = {local_fitness} (Iterasi: {local_iter}){status}")
+            print(f"Restart #{i}/{max_restarts}: Fitness Score = {best_fitness} (Iterasi: {local_iter})")
 
     history_dict = {"objective": all_history, "best_objective": best_so_far_history}
     return best_state, best_fitness, total_iterations, history_dict 
