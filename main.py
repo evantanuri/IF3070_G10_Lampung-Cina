@@ -15,6 +15,7 @@ from src.visualizer import (
     visualize_state,
     plot_objective_function,
     plot_acceptance_probability,
+    plot_ga_progress,
 )
 from src.hill_climbing_sideways_move import hill_climbing_sideways_move
 from src.simulated_annealing import simulated_annealing
@@ -82,7 +83,7 @@ def main():
         initial_state = randomize_state(ships, vehicles)
         init_fitness = calculate_fitness(initial_state, vehicles)
 
-         # Visualize state awal
+        # Visualize state awal (State awal GA akan dipisah karena memiliki state awal yang berbeda)
         if choice != "7":
             visualize_state(
                 initial_state, ships, vehicles,
@@ -127,7 +128,15 @@ def main():
             )
             initial_state = initial_best
             init_fitness = calculate_fitness(initial_best, vehicles)
-            history = {"objective": history_avg, "best_objective": history_max}
+
+        else:
+            print("Pilihan nomor algoritma tidak valid.")
+            break
+
+        duration = time.time() - start_time
+
+        # Visualize sate awal GA
+        if choice == "7":
             visualize_state(
                 initial_best, ships, vehicles,
                 title=f"State Awal (Best Gen 0) Run #{r}",
@@ -135,26 +144,30 @@ def main():
                 show=False
             )
 
-        else:
-            print("Pilihan nomor algoritma tidak valid.")
-            break
-
-        duration = time.time() - start_time
-        
-         # Visualize state akhir
+        # Visualize state akhir
         visualize_state(
             final_state, ships, vehicles,
             title=f"State Akhir Run #{r}",
             save_path=f"{output_dir}/state_akhir_run_{r}.png",
             show=False
         )
-        hist_data = history if isinstance(history, dict) else {"objective": history}
-        plot_objective_function(
-            hist_data,
-            title=f"Grafik Fitness Run #{r}",
-            save_path=f"{output_dir}/grafik_fitness_run_{r}.png",
-            show=False
-        )
+
+        if choice == "7":
+            plot_ga_progress(
+                history_max, history_avg,
+                title=f"Grafik Fitness Run #{r}",
+                save_path=f"{output_dir}/grafik_fitness_run_{r}.png",
+                show=False
+            )
+        else:
+            hist_data = history if isinstance(history, dict) else {"objective": history}
+            plot_objective_function(
+                hist_data,
+                title=f"Grafik Fitness Run #{r}",
+                save_path=f"{output_dir}/grafik_fitness_run_{r}.png",
+                show=False
+            )
+
         if choice == "6":
             plot_acceptance_probability(
                 history,
@@ -167,9 +180,7 @@ def main():
         print(f"Durasi Pencarian : {duration:.4f} detik")
         if choice == "7":
             print(f"Jumlah Populasi  : {ga_pop_size}")
-            print(f"Total Iterasi    : {total_iter}")
-        else:
-            print(f"Total Iterasi    : {total_iter}")
+        print(f"Total Iterasi    : {total_iter}")
         print(f"Initial Fitness  : {init_fitness}")
         print(f"Final Fitness    : {final_fitness}")
 

@@ -2,6 +2,7 @@ import math
  
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from matplotlib.ticker import MaxNLocator
  
 from src.state import calculate_fitness
  
@@ -227,6 +228,35 @@ def plot_objective_function(
     ax.grid(True, linestyle="--", alpha=0.3)
     ax.legend(loc="lower right")
  
+    plt.tight_layout()
+    if save_path:
+        fig.savefig(save_path, dpi=150, bbox_inches="tight")
+    if show:
+        plt.show()
+    plt.close(fig)
+
+def plot_ga_progress(
+    history_max,
+    history_avg,
+    title="Genetic Algorithm: Objective Function terhadap Generasi",
+    save_path=None,
+    show=True,
+):
+    # Plot nilai max dan rata rata populasi pada tiap generasi (khusus GA).
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    ax.plot(range(len(history_max)), history_max,
+            color="tab:blue", linewidth=1.5, label="Maksimum populasi")
+    ax.plot(range(len(history_avg)), history_avg,
+            color="tab:orange", linewidth=1.5, linestyle="--", label="Rata-rata populasi")
+
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.set_xlabel("Generasi")
+    ax.set_ylabel("Objective function (fitness)")
+    ax.set_title(title, fontsize=13, fontweight="bold")
+    ax.grid(True, linestyle="--", alpha=0.3)
+    ax.legend(loc="lower right")
+
     plt.tight_layout()
     if save_path:
         fig.savefig(save_path, dpi=150, bbox_inches="tight")

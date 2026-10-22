@@ -134,13 +134,13 @@ def genetic_algorithm(ships, vehicles, population_size=30, generations=100, cros
         fitnesses  = [calculate_fitness(individual, vehicles) for individual in population]
 
         best_idx = fitnesses.index(max(fitnesses))
+        history_max.append(max(fitnesses))
+        history_avg.append(sum(fitnesses) / len(fitnesses))
+
         if fitnesses[best_idx] > best_fitness:
             best_fitness = fitnesses[best_idx]
             best_state   = _copy_state(population[best_idx])
-            if verbose:                                   
+            if verbose:
                 print(f"Generasi {generation}: terbaik {history_max[-1]} | rata-rata {history_avg[-1]:.1f}")
-
-        history_max.append(max(fitnesses))
-        history_avg.append(sum(fitnesses) / len(fitnesses))
 
     return best_state, best_fitness, generations, history_max, history_avg, initial_best
